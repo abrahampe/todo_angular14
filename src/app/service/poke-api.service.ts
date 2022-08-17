@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, mergeMap, tap } from 'rxjs/operators';
 import {
   PokemonData,
+  PokemonFullData,
   PokemonList,
   PokemonShortData,
 } from '../interfaces/pokemon';
@@ -14,21 +15,23 @@ import {
 export class PokeApiService {
   private url: string = 'https://pokeapi.co/api/v2/pokemon?offset=20&limit=20';
   constructor(private http: HttpClient) {}
-const lista = [];
-  get apiListAll(): Observable<Array<PokemonData>> {
+
+  get apiListAll(): Observable<Array<PokemonShortData>> {
     return this.http
       .get<PokemonList>(this.url)
-      .pipe(map((res) => res?.results.map((rs) => {
-        return this.apiGetOne(rs.url).subscribe(
-         res =>res.status =
-       )
-      })
+      .pipe(map((res) => res?.results));
+  }
 
-
-
-      ));
-
-    //   (res) => res );
+  get apiListAllFull(): Observable<any> {
+    return this.http.get<PokemonList>(this.url).pipe(
+      map((res) =>
+        res?.results.map((resPoke) => {
+          this.http.get<PokemonData>(resPoke.url).subscribe((res) => {
+            return { basic: res, full: resPoke };
+          });
+        })
+      )
+    );
   }
 
   public apiGetOne(url: string): Observable<PokemonData> {

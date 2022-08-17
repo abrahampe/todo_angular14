@@ -12,7 +12,7 @@ export class CardListComponent implements OnInit {
   constructor(private pokeApiService: PokeApiService) {}
 
   ngOnInit(): void {
-    this.pokeApiService.apiListAll.subscribe((res) => {
+    this.pokeApiService.apiListAllFull.subscribe((res) => {
       this.list = res;
       console.log(res);
     });

@@ -14,6 +14,11 @@ export interface PokemonShortData {
   front_default?: string;
 }
 
+export interface PokemonFullData {
+  basic: PokemonShortData;
+  full: PokemonData;
+}
+
 export interface PokemonData {
   abilities: [
     {
