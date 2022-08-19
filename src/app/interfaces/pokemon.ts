@@ -10,6 +10,7 @@ export interface PokemonList {
 export interface PokemonShortData {
   id?: number;
   name: string;
+  details: PokemonData;
   url: string;
   front_default?: string;
 }

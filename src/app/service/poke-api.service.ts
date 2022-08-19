@@ -22,15 +22,14 @@ export class PokeApiService {
       .pipe(map((res) => res?.results));
   }
 
-  get apiListAllFull(): Observable<any> {
+  get apiListAllFull(): Observable<Array<PokemonShortData>> {
     return this.http.get<PokemonList>(this.url).pipe(
-      map((res) =>
-        res?.results.map((resPoke) => {
-          this.http.get<PokemonData>(resPoke.url).subscribe((res) => {
-            return { basic: res, full: resPoke };
-          });
-        })
-      )
+      map((res) => res?.results),
+      tap((resPk) => {
+        resPk.map((x) =>
+          this.apiGetOne(x.url).subscribe((res) => (x.details = res))
+        );
+      })
     );
   }
 
