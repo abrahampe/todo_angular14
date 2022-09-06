@@ -29,7 +29,8 @@ export class PokeApiService {
         resPk.map((x) =>
           this.apiGetOne(x.url).subscribe((res) => (x.details = res))
         );
-      })
+      }),
+      tap(console.log)
     );
   }
 
